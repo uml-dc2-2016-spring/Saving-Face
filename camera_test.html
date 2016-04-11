@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<title> Photo Log </title>
+<head>
+  <meta charset="UTF-8">
+  <h1> Snap Photo When Ready </h1>
+</head>
+<body>
+<video id="video" width="300" height="300" autoplay></video>
+<button id="snap" onclick="takePhoto()">Snap Photo</button>
+<canvas id="canvas" width="300" height="300"></canvas>
+<pre id="response">Hit Submit when ready</pre>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="facepp-sdk.min.js"></script>
+<script>
+// Put event listeners into place
+window.addEventListener("DOMContentLoaded", function() {
+	// Grab elements, create settings, etc.
+	var     video = document.getElementById("video"),
+		videoObj = { "video": true },
+		errBack = function(error) {
+			console.log("Video capture error: "); 
+		};
+
+	// Put video listeners into place
+	if(navigator.getUserMedia) { // Standard
+		navigator.getUserMedia(videoObj, function(stream) {
+			video.src = stream;
+			video.play();
+		}, errBack);
+	} else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+		navigator.webkitGetUserMedia(videoObj, function(stream){
+			video.src = window.webkitURL.createObjectURL(stream);
+			video.play();
+		}, errBack);
+	}
+	else if(navigator.mozGetUserMedia) { // Firefox-prefixed
+		navigator.mozGetUserMedia(videoObj, function(stream){
+			video.src = window.URL.createObjectURL(stream);
+			video.play();
+		}, errBack);
+	}
+}, false);
+
+function takePhoto()
+{
+	var api = new FacePP('dc33de5cf45a20090f8814cf0d09db74', 'Z4ggKeIGyayOjK1QWCZ8YmVW8JoSQ9h7', { apiURL: 'http://apius.faceplusplus.com/' });
+        var can = document.getElementById("canvas");
+        var ctx = can.getContext("2d");
+	ctx.drawImage(document.getElementById("video"), 0, 0, 300, 300);
+	var img = new Image();
+	img.src = can.toDataURL("image/jpg");
+	api.request('detection/detect', can.toDataURL("image/jpg"), function(err, result) {
+  if (err) {
+    document.getElementById('response').innerHTML = 'Load failed.';
+    return;
+  }
+  document.getElementById('response').innerHTML= JSON.stringify(result, null, 2);
+});
+};
+</script>
+</body>
+</html>

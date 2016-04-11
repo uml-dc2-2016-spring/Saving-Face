@@ -1,0 +1,3 @@
+API Key: dc33de5cf45a20090f8814cf0d09db74
+API Secret: Z4ggKeIGyayOjK1QWCZ8YmVW8JoSQ9h7
+API URL: apius.faceplusplus.com
