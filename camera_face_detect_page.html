@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<title> Photo Log </title>
+<head>
+  <meta charset="UTF-8">
+  <h1> Snap Photo When Ready </h1>
+</head>
+<body>
+<video id="video" width="300" height="300" autoplay></video>
+<button id="snap" onclick="takePhoto()">Snap Photo</button>
+<canvas id="canvas" width="300" height="300"></canvas>
+<pre id="response">Hit Submit when ready</pre>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="facepp-sdk.min.js"></script>
+<script>
+// Put event listeners into place
+window.addEventListener("DOMContentLoaded", function() {
+	// Grab elements, create settings, etc.
+	var     video = document.getElementById("video"),
+		videoObj = { "video": true },
+		errBack = function(error) {
+			console.log("Video capture error: "); 
+		};
+
+	// Put video listeners into place
+	if(navigator.getUserMedia) { // Standard
+		navigator.getUserMedia(videoObj, function(stream) {
+			video.src = stream;
+			video.play();
+		}, errBack);
+	} else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+		navigator.webkitGetUserMedia(videoObj, function(stream){
+			video.src = window.webkitURL.createObjectURL(stream);
+			video.play();
+		}, errBack);
+	}
+	else if(navigator.mozGetUserMedia) { // Firefox-prefixed
+		navigator.mozGetUserMedia(videoObj, function(stream){
+			video.src = window.URL.createObjectURL(stream);
+			video.play();
+		}, errBack);
+	}
+}, false);
+
+//Got code from a Mr.Alan Sutherland at http://blog.devteaminc.co/posting-a-canvas-image-to-twitter-using-oauth/
+function dataURItoBlob(dataURI) {
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ia], {type:mimeString});
+}
+
+
+function takePhoto()
+{
+	var api = new FacePP('dc33de5cf45a20090f8814cf0d09db74', 'Z4ggKeIGyayOjK1QWCZ8YmVW8JoSQ9h7', { apiURL: 'http://apius.faceplusplus.com/' });
+        var can = document.getElementById("canvas");
+        var ctx = can.getContext("2d");
+	ctx.drawImage(document.getElementById("video"), 0, 0, 300, 300);
+	var img = can.toDataURL("image/png");
+	var file = dataURItoBlob(img); 
+	var oReq = new XMLHttpRequest();
+	oReq.open("POST", 'http://127.0.0.1:8081/camera_test.html', true );
+	//oReq.send(file);
+	api.request('detection/detect', oReq.send(file) , function(err, result) {
+  if (err) {
+    document.getElementById('response').innerHTML = 'Load failed.';
+    return;
+  }
+  document.getElementById('response').innerHTML= JSON.stringify(result, null, 2);
+});
+};
+</script>
+</body>
+</html>
