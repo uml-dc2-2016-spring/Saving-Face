@@ -11,5 +11,8 @@ I have made some early test files for both the server that's using node.js code,
  
  Have also begun working on getting all html pages to operate together on the same server.js file and plan to work on the class for "user accounts".
 
- # Progress (Week 04/05)
+# Progress (Week 04/05)
  Worked on learning how to use face++ API. On testing the code I'm having trouble getting images taken from the web cam to load correctly into the detect faces function that the API offers, have been trying to fix this bug since, it works if I paste into my code the url of some other image online but even when I acquire URL of the canvas image through script code it keeps returning an error. Will be working on it continuously, update pending.
+ 
+# Progress (Week 4/12)
+I've gotten stuck on this error with using the face++ API, have spent many hours researching solutions making constant changes to camera html file. Also have spent time looking into going back to opencv through a node js module. Through more searching found a method to get opencv to work with node js on my computer's operating system and now am working on integrating opencv as the api to compare images.  
