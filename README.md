@@ -16,3 +16,6 @@ I have made some early test files for both the server that's using node.js code,
  
 # Progress (Week 4/12)
 I've gotten stuck on this error with using the face++ API, have spent many hours researching solutions making constant changes to camera html file. Also have spent time looking into going back to opencv through a node js module. Through more searching found a method to get opencv to work with node js on my computer's operating system and now am working on integrating opencv as the api to compare images.  
+
+# Progress (Week 04/19)
+After weeks of tweaking and searching I have finally fixed that stupid bug in my code regarding loading images to the Face++ API. I spent a decent amount of time trying to use npm from node.js to load the node-opencv package after feeling that the Face++ api wasn't going to work. I then recently decided to look into using a seperate API to resolve the issue with face++. I Now am using Imgur's API to upload and store the initial image, from there taking the link from the response JSON I pass it into the Face++ API's detect function to now give it it's own face ID and it now processes that image from Imgur. With this bug finally hurdled, the rest of the project should go much smoother since the Face++ API gives me all the tools I need, I may even get much more code up in the coming week that would resemble the final result.
