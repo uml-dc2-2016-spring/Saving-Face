@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <title> Login </title>
+  <head>
+    <meta charset="UTF-8">
+    <h1> Submit your Username and Password in the fields below. Then when ready Snap a photo to submit information. </h1>
+  </head>
+  <body>
+    <button id="test" onclick="test_recognition()">test</button>
+    Username:<br>
+    <input type="text" id="user" name="user"><br>
+    Password:<br>
+    <input type="text" id="password" name="pssword"><br>
+
+    <video id="video" width="300" height="300" autoplay></video>
+    <button id="snap" onclick="attempt()">Snap Photo</button>
+    <canvas id="canvas" width="300" height="300"></canvas>
+    <pre id="resp"></pre>
+    <pre id="diecaf"></pre>
+    <button onclick="test_Base()">test pool of accounts</button>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="facepp-sdk.min.js"></script>
+    <script type="text/javascript" src="camera.js"></script>
+
+  </body>
+</html>
