@@ -28,16 +28,18 @@ window.addEventListener("DOMContentLoaded", function() {
 }, false);
 
 
-var locat;
 
 // Ajax related code acquired from http://stackoverflow.com/questions/17805456/upload-a-canvas-image-to-imgur-api-v3-with-javascript from user: TK123
 function imload(func){
-try {
-	    	var img = document.getElementById("canvas").toDataURL('image/jpeg', 0.9).split(',')[1];
+        
+        try {
+	      var img = document.getElementById("canvas").toDataURL('image/jpeg', 0.9).split(',')[1];
 	    } catch(e) {
-    	var img = document.getElementById("canvas").toDataURL().split(',')[1];
-	    }
+               	         var img = document.getElementById("canvas").toDataURL().split(',')[1];
+	               }
 
+
+// uploads the image taken via the camera to imgur, the func passed into the code is used to call one of the functions that will utilize the face++ api.
 $.ajax({
     url: 'https://api.imgur.com/3/image',
     type: 'post',
@@ -59,7 +61,12 @@ $.ajax({
 
 function Face( link )
 {
+  //initialize the face++ api using my key and secret
+
 	var api = new FacePP('dc33de5cf45a20090f8814cf0d09db74', 'Z4ggKeIGyayOjK1QWCZ8YmVW8JoSQ9h7', { apiURL: 'http://apius.faceplusplus.com/' });
+
+  // calls the detection function to detect the face of the current person in the image. The link being passed in comes from the AJAX request in the imload function, the link to the imgur page created.
+
 	api.request('detection/detect', {url: link } , function(err, result) {
   if (err) {
     document.getElementById('resp').innerHTML = 'Load failed.';
@@ -68,6 +75,14 @@ function Face( link )
   //document.getElementById('resp').innerHTML= JSON.stringify(result, null, 2);
   var t = JSON.stringify(result, null, 2);
   var f = t.split(": ");
+  
+  // error checker to make sure a face wwas actually detected, if not it refreshes the page. 
+ 
+  if( f.length < 14 )
+  {
+   alert("No face was detected try again"); 
+   window.location.href = "registration.html";
+  }
   var yay = f[14].split(",");
   var nex = yay[0].split('"');
   //document.getElementById('diecaf').innerHTML= nex[1];
@@ -105,11 +120,13 @@ function takePhoto()
 	
 }
 
+//just a test function used through the course of the coding process
 function testforjsonstuff()
 {
 	Face("http://i.imgur.com/BMhHpP1.jpg");
 }
 
+//this is the base login function for the site once the image to be used is loaded up to imgur.
 function recogtest( link, i )
 {
   var api = new FacePP('dc33de5cf45a20090f8814cf0d09db74', 'Z4ggKeIGyayOjK1QWCZ8YmVW8JoSQ9h7', { apiURL: 'http://apius.faceplusplus.com/' });
@@ -119,20 +136,33 @@ function recogtest( link, i )
         }
   var t = JSON.stringify(result, null, 2);
   var f = t.split(": ");
+  
+  //tests to make sure face was detected in image. 
+
+  if( f.length < 14 )
+  {
+   alert("No face was detected try again"); 
+   window.location.href = "login.html";
+  }
   var yay = f[14].split(",");
   var nex = yay[0].split('"');
-  
+
+  //with the face id attached to the account being logged into, and the id of the newly acquired image we now ccompare the two.
+  //we want the value of the similarities between the account's saved face and our attempted login's saved face.
+  // If the value of the similarities is greater than 70% then it's safe to assume it's the right person.
+
   api.request('recognition/compare', {face_id1: Base[i].id, face_id2: nex[1]}, function(err, respo) {
           if(err) {
           return 'false';
           }
+          // these lines of code just parse through the JSON document response to get the similarity value.
           var re = JSON.stringify(respo, null, 2);
-          //document.getElementById("resp").innerHTML = re;
+          
           var sp = re.split("}");
-          //document.getElementById("diecaf").innerHTML = sp;
+   
 	  var sim = sp[1].split(": ");
-          //document.getElementById("diecaf").innerHTML = sim[2];
-	  console.log(sim[2]);
+	
+          console.log(sim[2]);
           if( sim[2] < 70 )
 	    alert("access denied");
           else 
@@ -142,7 +172,7 @@ function recogtest( link, i )
 }
 
 
-
+// once the username and password are matched we can take the photo and load it to imgur, making sure to save the location of the matching account in our base array.
 function loginload( i, func )
 {
         var can = document.getElementById("canvas");
@@ -174,6 +204,9 @@ $.ajax({
 
 }
 
+// the first function called in the login process, we iterate the array of accounts until we find a matching username to what was inputted by the client.
+// we then check it's password to make sure that is a match. If One of these doesn't ring true we alert the user that either the username or password didn't match and refresh the page.
+
 function login()
 {
   var match = 'false';
@@ -194,31 +227,14 @@ function login()
   }
   if(match == 'false')
     {
-    alert("username or password didn't match");               
+    alert("username or password didn't match");
+    window.location.href = "login.html";               
     }
 }
 
-function attempt()
-{
-   var result;
-   login();
-/*   if( result == 'true' )
-	{
- 	   alert("Login successful");
 
-        }
-   else   
-        {
-           alert("Login failed");
-        }*/
-}
-//the class for accounts for now just accepts a username and password.
-var Account = function(username, password, id){
-   this.userName = username;
-   this.passWord = password;
-   this.id = id;
-};
 
+//another test file for the sake of debugging early on.
 function test_recognition()
 {
         var api = new FacePP('dc33de5cf45a20090f8814cf0d09db74', 'Z4ggKeIGyayOjK1QWCZ8YmVW8JoSQ9h7', { apiURL: 'http://apius.faceplusplus.com/' });
@@ -250,7 +266,14 @@ function test_Base()
        console.log(Base[i].passWord);
     }
 }
-//will initially be 0 but will store account data.
+
+//the class for accounts for now just accepts a username and password.
+var Account = function(username, password, id){
+   this.userName = username;
+   this.passWord = password;
+   this.id = id;
+};
+
 var Base = [];
 Base[0] = new Account('danjou', 'password', 'afe215f5c638fc96696e753794fdf534');
 var index = 1;
