@@ -7,7 +7,6 @@
   </head>
   <body bgcolor="#000080">
 
-    <button onclick="teststor()">teststor</button>
     Username:<br>
     <input type="text" id="user" name="user"><br>
     Password:<br>
@@ -16,20 +15,11 @@
     <video id="video" width="300" height="300" autoplay></video>
     <button id="snap" onclick="create_Account()">Snap Photo</button>
     <canvas id="canvas" width="300" height="300"></canvas>
-    <button onclick="makebill()">test pool of accounts</button>
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="facepp-sdk.min.js"></script>
     <script type="text/javascript" src="camera.js"></script>
     <script type="text/javascript" src="register.js"></script>
-    <script>
-	function teststor()
-        {
-	   i = 0;
-           var full = JSON.parse(localStorage.getItem( localStorage.key(i) ));
-           console.log(JSON.parse(localStorage.getItem( localStorage.key(i) )).face);
-	   console.log(localStorage.length);
-        }
-    </script>
+
 
   </body>
 </html>
