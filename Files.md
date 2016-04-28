@@ -3,8 +3,14 @@
 A list of all important files and their purposes:
 
 # camera.js
-   effectively the main file of all the camera related functions. Here is where all the calls to the APIs utilized are made such as imgur's api and the face++ api. Holds code regarding the accounts it stores and what to do with said information when functions are called.
+   effectively the main file of all the Web camera related functions. This is what allows access to the webcam for the program's usage.
+   
+# register.js
+   This holds all the functions that are used to register an account on the server. Here is where the imgur api and face++ api's are called.
  
+# login_check.js
+  All of the login functions are stored here. Once again this is where the imgur api and face++ api are called in relation to the login process.
+  
 # server.js
   This is where the server is run and what needs to be called through the node.js command prompt in order for the rest of the code to run smoothly. It creates the local site that can be accessed from the computer.
 
