@@ -2,17 +2,32 @@
 <html>
 <title> Home </title>
 <head>
-  <h1> Welcome to Some Arbitrary Website that can be logged into </h1>
+  <h1 align="center"> Welcome to Some Arbitrary Website that can be logged into </h1>
 </head>
-<body>
-<a href="login.html">login</a>
-<a href="registration.html">register an account</a>
-<br>
-<br>
-<pre id="accinfo"></pre>
+<body bgcolor="#00FFFF">
+  <br>
+  <br>
+  <br>
+  <a href="login.html" align="center">login</a>
+  <a href="registration.html" align="center">register an account</a>
+  <br>
+  <br>
+  <big align="center"><b><i> Welcome to the Saving Face Home page! From here you can either register an account, or attempt a login to a premade account</i></b></big>
+  <br>
+  <br>
 
-<button onclick="test_Base()">test pool of accounts</button>
+<button onclick="test_js()">test pool of accounts</button>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="facepp-sdk.min.js"></script>
-<script type="text/javascript" src="camera.js"></script>
+<script>
+
+
+function test_js()
+{	
+   for( i = 0; i < localStorage.length; i++)
+     {
+       console.log( JSON.parse( localStorage.getItem( localStorage.key(i) )));
+     }
+}
+</script>
 </body>
