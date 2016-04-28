@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<title> Account Data </title>
+<head>
+  <h1 id="top" align="center"> Here would be a page where Account information is stored if they were logged in.</h1>
+</head>
+<body onload="check()">
+ <button onclick="signout()"> Signout</button> 
+ <p id="bod">must be logged in to see anything</p>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="facepp-sdk.min.js"></script>
+<script>
+//checks if the user is logged in or rather which user is logged in.
+function check()
+{
+  var im = JSON.parse(localStorage.getItem('in')).bool;
+  if( im == 'true')
+  { 
+     document.getElementById("top").innerHTML = "Welcome "+JSON.parse(localStorage.getItem('in')).user;
+     document.getElementById("bod").innerHTML = "Here's account information relevent to user: "+JSON.parse(localStorage.getItem('in')).user;
+  }
+}
+
+//a basic signout function
+function signout()
+{
+  var accdetail = {};
+  accdetail.bool = 'false';
+  accdetail.user = 'NULL';
+  localStorage.setItem('in', JSON.stringify(accdetail));
+  window.location.href = "home.html";
+}
+</script>
+
+</body>
+</html>
