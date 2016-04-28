@@ -16,6 +16,9 @@ A list of all important files and their purposes:
 
 # home.html
   This serves as the home page of an arbitrary website that would have it's user login or register before showing information.
+ 
+# account.html
+  directly accessing it will result in a page that tells you you need to sign in to view account related details. Meant to be a sort of general page for where the user's information that would be stored on the site would be. If login process is followed then there should mildly personalized text referring to that specific user.
   
 # registration.html 
   Serves as the page where one can register their account for a site using a username, password and picture taken via webcam.
